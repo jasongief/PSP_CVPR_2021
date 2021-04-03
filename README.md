@@ -1,4 +1,4 @@
-## PyTorch implementation of the paper: **Positive Sample Propagation along the Audio-Visual Event Line**
+## PyTorch implementation of the CVPR-2021 paper: **Positive Sample Propagation along the Audio-Visual Event Line**
 
 ### paper link: [https://arxiv.org/abs/2104.00239](https://arxiv.org/abs/2104.00239)
 
