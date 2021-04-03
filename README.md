@@ -2,9 +2,7 @@
 
 ### paper link: [https://arxiv.org/abs/2104.00239](https://arxiv.org/abs/2104.00239)
 
-
 ## Audio-Visual Event (AVE) Localization task
----
 AVE localization aims to find out those video segments containing an *audio-visual event* and classify its category.
 An *audio-visual* event is both audible and visible, which means the sound source must appear in visual image (visible) while the sound it makes also exists in audio portion (audible).
 
@@ -14,7 +12,6 @@ An *audio-visual* event is both audible and visible, which means the sound sourc
 ![framework](./figures/figure2_framework.png)
 
 ## Data preparation
----
 The AVE dataset and the extracted audio and visual features can be downloaded from [https://github.com/YapengTian/AVE-ECCV18](https://github.com/YapengTian/AVE-ECCV18).
 Other preprocessed files used in this repository can be downloaded from [here](https://drive.google.com/file/d/1juKwV813ZibgX79VDjB6X6Pnmq1X7Huz/view?usp=sharing).
 All the data needed is listed as below, and these files should be included in the ``data`` folder.
@@ -42,7 +39,6 @@ train_order.h5  val_order.h5  test_order.h5
 
 
 ## Citation
-----
 If our paper is useful for your research, please consider citing it:
 <pre><code>@InProceedings{zhou2021positive,
     title={Positive Sample Propagation along the Audio-Visual Event Line},
