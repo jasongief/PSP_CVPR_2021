@@ -150,10 +150,10 @@ def val(args, net_model):
 
 
 def test(args, net_model, model_path=None):
-    if model_path is None:
-        net_model.eval()
-    else:
+    if model_path is not None:
         net_model = torch.load(model_path)
+        print(">>> [Testing] Load pretrained model from " + model_path)
+
 
     net_model.eval()
     AVEData = AVE_Fully_Dataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
