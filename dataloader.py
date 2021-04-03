@@ -17,7 +17,7 @@ STANDARD_AVE_DATASET = ['Church bell', 'Male speech, man speaking', 'Bark', 'Fix
                     'Motorcycle', 'Acoustic guitar', 'Train horn', 'Clock', 'Banjo', 'Goat', 'Baby cry, infant cry', 'Bus', 'Chainsaw',\
                     'Cat', 'Horse', 'Toilet flush', 'Rodents, rats, mice', 'Accordion', 'Mandolin']
 
-class AVEDataset(object):
+class AVE_Fully_Dataset(object):
     """Data preparation for fully supervised setting.
     """
     def __init__(self, video_dir, audio_dir, label_dir, order_dir, batch_size, status):
@@ -97,7 +97,7 @@ class AVEDataset(object):
 
 
 
-class AVE_weak_Dataset(object):
+class AVE_Weakly_Dataset(object):
     """Data preparation for weakly supervised setting.
     """
     def __init__(self, video_dir, video_dir_bg, audio_dir, audio_dir_bg, label_dir, prob_label_dir, label_dir_bg, label_dir_gt, order_dir, batch_size, status='train'):

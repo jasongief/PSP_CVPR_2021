@@ -9,7 +9,7 @@ import random
 import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR
 
-from dataloader import *
+from dataloader import AVE_Fully_Dataset
 from fully_model import psp_net
 from measure import compute_acc, AVPSLoss
 from Optim import ScheduledOptim
@@ -51,7 +51,7 @@ torch.cuda.manual_seed(FixSeed)
 
 
 def train(args, net_model, optimizer):
-    AVEData = AVEDataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
+    AVEData = AVE_Fully_Dataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
                         order_dir=args.dir_order_train, batch_size=args.batch_size, status='train')
     nb_batch = AVEData.__len__() // args.batch_size
     print('nb_batch:', nb_batch)
@@ -129,7 +129,7 @@ def train(args, net_model, optimizer):
 
 def val(args, net_model):
     net_model.eval()
-    AVEData = AVEDataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
+    AVEData = AVE_Fully_Dataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
                         order_dir=args.dir_order_val, batch_size=402, status='val')
     nb_batch = AVEData.__len__()
     audio_inputs, video_inputs, labels, _, _ = AVEData.get_batch(0)
@@ -156,7 +156,7 @@ def test(args, net_model, model_path=None):
         net_model = torch.load(model_path)
 
     net_model.eval()
-    AVEData = AVEDataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
+    AVEData = AVE_Fully_Dataset(video_dir=args.dir_video, audio_dir=args.dir_audio, label_dir=args.dir_labels,
                          order_dir=args.dir_order_test, batch_size=402, status='test')
     nb_batch = AVEData.__len__()
     audio_inputs, video_inputs, labels, _, _, = AVEData.get_batch(0)

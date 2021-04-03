@@ -10,7 +10,7 @@ import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR
 from Optim import ScheduledOptim
 
-from dataloader import AVE_weak_Dataset
+from dataloader import AVE_Weakly_Dataset
 from weakly_model import psp_net
 from measure import compute_acc
 
@@ -59,7 +59,7 @@ torch.cuda.manual_seed(FixSeed)
 
 
 def train(args, net_model, optimizer):
-    AVEData = AVE_weak_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio, \
+    AVEData = AVE_Weakly_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio, \
                         audio_dir_bg=args.dir_audio_bg, label_dir=args.dir_labels, prob_label_dir=args.prob_dir_labels, label_dir_bg=args.dir_labels_bg, \
                         label_dir_gt = args.dir_labels_gt, order_dir=args.dir_order_train, batch_size=args.batch_size, status = "train")
 
@@ -135,7 +135,7 @@ def train(args, net_model, optimizer):
 def val(args, net_model):
     net_model.eval()
 
-    AVEData = AVE_weak_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio,
+    AVEData = AVE_Weakly_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio,
                          audio_dir_bg=args.dir_audio_bg, label_dir=args.dir_labels, prob_label_dir=args.prob_dir_labels, label_dir_bg=args.dir_labels_bg,
                          label_dir_gt = args.dir_labels_gt, order_dir=args.dir_order_val, batch_size=402, status="val")
 
@@ -162,7 +162,7 @@ def test(args, net_model, model_path=None):
         print(">>> [Testing] Load pretrained model from " + model_path)
 
     net_model.eval()
-    AVEData = AVE_weak_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio,
+    AVEData = AVE_Weakly_Dataset(video_dir=args.dir_video, video_dir_bg=args.dir_video_bg, audio_dir=args.dir_audio,
                          audio_dir_bg=args.dir_audio_bg, label_dir=args.dir_labels, prob_label_dir=args.prob_dir_labels,  label_dir_bg=args.dir_labels_bg,
                          label_dir_gt=args.dir_labels_gt,
                          order_dir=args.dir_order_test, batch_size=402, status="test")
