@@ -24,13 +24,13 @@ parser = argparse.ArgumentParser(description='Fully supervised AVE localization'
 
 # data
 parser.add_argument('--model_name', type=str, default='PSP', help='model name')
-parser.add_argument('--dir_video', type=str, default="../data/visual_feature.h5", help='visual features')
-parser.add_argument('--dir_audio', type=str, default='../data/audio_feature.h5', help='audio features')
-parser.add_argument('--dir_labels', type=str, default='../data/right_labels.h5', help='labels of AVE dataset')
+parser.add_argument('--dir_video', type=str, default="./data/visual_feature.h5", help='visual features')
+parser.add_argument('--dir_audio', type=str, default='./data/audio_feature.h5', help='audio features')
+parser.add_argument('--dir_labels', type=str, default='./data/right_labels.h5', help='labels of AVE dataset')
 
-parser.add_argument('--dir_order_train', type=str, default='../data/train_order.h5', help='indices of training samples')
-parser.add_argument('--dir_order_val', type=str, default='../data/val_order.h5', help='indices of validation samples')
-parser.add_argument('--dir_order_test', type=str, default='../data/test_order.h5', help='indices of testing samples')
+parser.add_argument('--dir_order_train', type=str, default='./data/train_order.h5', help='indices of training samples')
+parser.add_argument('--dir_order_val', type=str, default='./data/val_order.h5', help='indices of validation samples')
+parser.add_argument('--dir_order_test', type=str, default='./data/test_order.h5', help='indices of testing samples')
 
 parser.add_argument('--nb_epoch', type=int, default=300,  help='number of epoch')
 parser.add_argument('--batch_size', type=int, default=128, help='number of batch size')
