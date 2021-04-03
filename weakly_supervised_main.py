@@ -120,7 +120,7 @@ def train(args, net_model, optimizer):
                 print('best val accuracy: {} *******************************'.format(best_val_acc))
                 # torch.save(net_model, model_name + "_" + str(epoch) + "_weakly.pt")
         if epoch % args.check_epoch == 0 and epoch != 0:
-            test_acc = test(args, net_model, model_path)
+            test_acc = test(args, net_model)
             print('test accuracy:', test_acc, 'epoch=', epoch)
             if test_acc >= best_test_acc:
                 best_test_acc = test_acc
@@ -157,9 +157,7 @@ def val(args, net_model):
 
 
 def test(args, net_model, model_path=None):
-    if model_path is None:
-        net_model.eval()
-    else:
+    if model_path is not None:
         net_model = torch.load(model_path)
         print(">>> [Testing] Load pretrained model from " + model_path)
 
