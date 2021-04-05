@@ -13,7 +13,7 @@ An *audio-visual* event is both audible and visible, which means the sound sourc
 
 ## Data preparation
 The AVE dataset and the extracted audio and visual features can be downloaded from [https://github.com/YapengTian/AVE-ECCV18](https://github.com/YapengTian/AVE-ECCV18).
-Other preprocessed files used in this repository can be downloaded from [here](https://drive.google.com/file/d/1juKwV813ZibgX79VDjB6X6Pnmq1X7Huz/view?usp=sharing).
+Other preprocessed files used in this repository can be downloaded from [here](https://drive.google.com/drive/folders/1q8GYBqfkyDDAnVMClrMTXR9YzH9UPcSM?usp=sharing).
 All the required data are listed as below, and these files should be placed into the ``data`` folder.
 <pre><code>
 audio_feature.h5  visual_feature.h5  audio_feature_noisy.h5 visual_feature_noisy.h5
