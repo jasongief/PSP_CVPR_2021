@@ -93,28 +93,28 @@ class PSP(nn.Module):
         a_branch1 = self.dropout(self.activation(self.a_L1(a_fea)))
         a_branch2 = self.dropout(self.activation(self.a_L2(a_fea)))
 
-        cross_att_v_to_a = torch.bmm(v_branch2, a_branch1.permute(0, 2, 1)) # row(v) - col(a), [bs, 10, 10]
-        cross_att_v_to_a /= torch.sqrt(torch.FloatTensor([v_branch2.shape[2]]).cuda())
+        beta_va = torch.bmm(v_branch2, a_branch1.permute(0, 2, 1)) # row(v) - col(a), [bs, 10, 10]
+        beta_va /= torch.sqrt(torch.FloatTensor([v_branch2.shape[2]]).cuda())
 
-        cross_att_v_to_a = F.relu(cross_att_v_to_a) # relu
-        cross_att_a_to_v = cross_att_v_to_a.permute(0, 2, 1) # transpose
-        sum_v_to_a = torch.sum(cross_att_v_to_a, dim=-1, keepdim=True)
-        cross_att_v_to_a = cross_att_v_to_a / (sum_v_to_a + 1e-8)
-        cross_att_v_to_a = (cross_att_v_to_a > thr_val).float() * cross_att_v_to_a
-        sum_a_to_v = torch.sum(cross_att_a_to_v, dim=-1, keepdim=True)
-        cross_att_a_to_v = cross_att_a_to_v / (sum_a_to_v + 1e-8)
-        cross_att_a_to_v = (cross_att_a_to_v > thr_val).float() * cross_att_a_to_v
+        beta_va = F.relu(beta_va) # relu
+        beta_av = beta_va.permute(0, 2, 1) # transpose
+        sum_v_to_a = torch.sum(beta_va, dim=-1, keepdim=True)
+        beta_va = beta_va / (sum_v_to_a + 1e-8)
+        gamma_va = (beta_va > thr_val).float() * beta_va
+        sum_a_to_v = torch.sum(beta_av, dim=-1, keepdim=True)
+        beta_av = beta_av / (sum_a_to_v + 1e-8)
+        gamma_av = (beta_av > thr_val).float() * beta_av
 
-        cross_v_fea = torch.bmm(cross_att_v_to_a, a_branch2)
-        final_v_fea = v_fea + cross_v_fea
-        cross_a_fea = torch.bmm(cross_att_a_to_v, v_branch1)
-        final_a_fea = a_fea + cross_a_fea
+        a_pos = torch.bmm(gamma_va, a_branch2)
+        v_psp = v_fea + a_pos
+        v_pos = torch.bmm(gamma_av, v_branch1)
+        a_psp = a_fea + v_pos
 
-        final_v_fea = self.layer_norm(final_v_fea)
-        final_a_fea = self.layer_norm(final_a_fea)
+        v_psp = self.layer_norm(v_psp)
+        a_psp = self.layer_norm(a_psp)
 
-        a_v_fuse = torch.mul(final_v_fea + final_a_fea, 0.5)
-        return a_v_fuse, final_v_fea, final_a_fea, cross_v_fea, cross_a_fea, cross_att_v_to_a, cross_att_a_to_v
+        a_v_fuse = torch.mul(v_psp + a_psp, 0.5)
+        return a_v_fuse
 
 
 class AVGA(nn.Module):
@@ -218,7 +218,7 @@ class psp_net(nn.Module):
         video_t = self.attention(fa_fea, video) # [bs, 10, 512]
         video_t = self.linear_v(video_t) # [bs, 10, 128]
         lstm_audio, lstm_video = self.lstm_a_v(fa_fea, video_t)
-        fusion, final_v_fea, final_a_fea, cross_v_fea, cross_a_fea, cross_att_v_to_a, cross_att_a_to_v = self.psp(lstm_audio, lstm_video, thr_val) # [bs, 10, 256]
+        fusion = self.psp(lstm_audio, lstm_video, thr_val) # [bs, 10, 256]
         out = self.relu(self.L1(fusion))
         score = self.L2(out) #[bs, 10, 29]
         ######################################## weighting branch #######################

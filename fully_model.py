@@ -139,27 +139,27 @@ class PSP(nn.Module):
         a_branch1 = self.dropout(self.activation(self.a_L1(a_fea)))
         a_branch2 = self.dropout(self.activation(self.a_L2(a_fea)))
 
-        cross_att_v_to_a = torch.bmm(v_branch2, a_branch1.permute(0, 2, 1)) # row(v) - col(a), [bs, 10, 10]
-        cross_att_v_to_a /= torch.sqrt(torch.FloatTensor([v_branch2.shape[2]]).cuda())
+        beta_va = torch.bmm(v_branch2, a_branch1.permute(0, 2, 1)) # row(v) - col(a), [bs, 10, 10]
+        beta_va /= torch.sqrt(torch.FloatTensor([v_branch2.shape[2]]).cuda())
 
-        cross_att_v_to_a = F.relu(cross_att_v_to_a) # ReLU
-        cross_att_a_to_v = cross_att_v_to_a.permute(0, 2, 1) # transpose
+        beta_va = F.relu(beta_va) # ReLU
+        beta_av = beta_va.permute(0, 2, 1) # transpose
 
-        sum_v_to_a = torch.sum(cross_att_v_to_a, dim=-1, keepdim=True)
-        cross_att_v_to_a = cross_att_v_to_a / (sum_v_to_a + 1e-8) # [bs, 10, 10]
-        cross_att_v_to_a = (cross_att_v_to_a > thr_val).float() * cross_att_v_to_a
-        sum_v_to_a = torch.sum(cross_att_v_to_a, dim=-1, keepdim=True)  # l1-normalization
-        cross_att_v_to_a = cross_att_v_to_a / (sum_v_to_a + 1e-8)
+        sum_v_to_a = torch.sum(beta_va, dim=-1, keepdim=True)
+        beta_va = beta_va / (sum_v_to_a + 1e-8) # [bs, 10, 10]
+        gamma_va = (beta_va > thr_val).float() * beta_va
+        sum_v_to_a = torch.sum(gamma_va, dim=-1, keepdim=True)  # l1-normalization
+        gamma_va = gamma_va / (sum_v_to_a + 1e-8)
 
-        sum_a_to_v = torch.sum(cross_att_a_to_v, dim=-1, keepdim=True)
-        cross_att_a_to_v = cross_att_a_to_v / (sum_a_to_v + 1e-8)
-        cross_att_a_to_v = (cross_att_a_to_v > thr_val).float() * cross_att_a_to_v
-        sum_a_to_v = torch.sum(cross_att_a_to_v, dim=-1, keepdim=True)
-        cross_att_a_to_v = cross_att_a_to_v / (sum_a_to_v + 1e-8)
+        sum_a_to_v = torch.sum(beta_av, dim=-1, keepdim=True)
+        beta_av = beta_av / (sum_a_to_v + 1e-8)
+        gamma_av = (beta_av > thr_val).float() * beta_av
+        sum_a_to_v = torch.sum(gamma_av, dim=-1, keepdim=True)
+        gamma_av = gamma_av / (sum_a_to_v + 1e-8)
 
-        a_pos = torch.bmm(cross_att_v_to_a, a_branch2)
+        a_pos = torch.bmm(gamma_va, a_branch2)
         v_psp = v_fea + a_pos
-        v_pos = torch.bmm(cross_att_a_to_v, v_branch1)
+        v_pos = torch.bmm(gamma_av, v_branch1)
         a_psp = a_fea + v_pos
 
         v_psp = self.dropout(self.relu(self.v_fc(v_psp)))
