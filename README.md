@@ -34,7 +34,7 @@ train_order.h5  val_order.h5  test_order.h5
 - Test:
 > CUDA_VISIBLE_DEVICES=0 python weakly_supervised_main.py --model_name PSP --threshold=0.095 --trained_model_path ./model/PSP_weakly.pt
 
-**Note:** The pre-trained models can be downloaded [here](https://drive.google.com/drive/folders/1YEyEH6e988v1NUwwVYohrwY2DSpVtVoT?usp=sharing) and they should be placed into the ``model`` folder. With the pre-trained models, the AVE localization accuracy can achieve 78.0% and 73.9% under the fully and weakly supervised settings, respectively. This result is slightly higher than that we reported in the paper (77.8% and 73.5%). If you would like to train from scratch for the both settings, you may make some adjustments to further improve the performance (e.g., try another threshold value, choose a different initialization method and so on).
+**Note:** The pre-trained models can be downloaded [here](https://drive.google.com/drive/folders/1YEyEH6e988v1NUwwVYohrwY2DSpVtVoT?usp=sharing) and they should be placed into the ``model`` folder. If you would like to train from scratch for the both settings, you may make some adjustments to further improve the performance (e.g., try another threshold value, choose a different initialization method and so on).
 
 
 
