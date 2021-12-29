@@ -1,6 +1,6 @@
 ## PyTorch implementation of the CVPR-2021 paper: **Positive Sample Propagation along the Audio-Visual Event Line**
 
-### paper link: [https://arxiv.org/abs/2104.00239](https://arxiv.org/abs/2104.00239)
+### [paper link](https://openaccess.thecvf.com/content/CVPR2021/papers/Zhou_Positive_Sample_Propagation_Along_the_Audio-Visual_Event_Line_CVPR_2021_paper.pdf)
 
 ## Audio-Visual Event (AVE) Localization task
 AVE localization aims to find out those video segments containing an *audio-visual event* and classify its category.
